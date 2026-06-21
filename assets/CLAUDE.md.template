@@ -1,0 +1,118 @@
+# CLAUDE.md — jason 工作流骨架(generic 模板)
+
+> **本文件由 `/bootstrap-workflow` skill 复制到目标项目**。
+> 复制后,用户填入项目名 / 技术栈 / Quick Start 命令 / 业务域。
+> 通用部分(三层决策 / 闭环复盘 / 完成内容 4 件事)保留,业务域部分留 `{{...}}` 占位。
+
+## Bootstrap 边界(本 skill 只装什么)
+
+本 skill **只装工作流模板**:
+- CLAUDE.md(本文件)
+- `.claude/rules/` 4 个 generic rule
+- `.claude/memory/` 4 个 generic memory
+- `.claude/skills/retrospective/` 1 个 skill
+
+本 skill **不装**:
+- ❌ 框架脚手架(`package.json` / `vite.config` / `next.config` / `tsconfig.json`) — 用 `npm create vite` / `npx create-next-app` 等
+- ❌ Linter / Formatter(`.eslintrc` / `.prettierrc` / `husky` / `lint-staged`) — 用户自己配
+- ❌ CI(`.github/workflows/`) — 用户自己配
+- ❌ README.md — 用户自己写
+- ❌ 业务代码 / `src/` / 测试样例
+
+**用错征兆**:你在装 `package.json` 或 `vite.config` → 错了,那是 Vite/Next 的事。
+
+## 是什么
+
+`<PROJECT_NAME>` — `<一句话定位>`。`<技术栈一句话>`。
+
+## Quick Start
+
+| 动作 | 命令 |
+|---|---|
+| 装依赖 | `<例如: npm install / cargo build / pip install -r requirements.txt>` |
+| 起开发 | `<例如: npm run dev / cargo run>` |
+| 验证类型 | `<例如: npx tsc --noEmit / cargo check>` |
+| 看 git | `git status` / `git log --oneline` |
+
+## 设计语言
+
+(留空待用户填 — generic skill 不假设视觉语言)
+
+## 业务域(本项目专属)
+
+```
+{{BUSINESS_DOMAINS}}
+```
+
+> bootstrap 时由用户填入。例:`floating / settings / timeline / db / tray`。
+> commit message scope 用此清单(参考 `.claude/rules/commit-style.mdc`)。
+
+## 文件归位
+
+| 内容类型 | 去处 |
+|---|---|
+| 新功能「做什么」 | `docs/specs/YYYY-MM-DD-<topic>-design.md` |
+| 新功能「怎么做」 | `docs/plans/YYYY-MM-DD-<topic>.md` |
+| 阶段交付报告 | `docs/reports/` |
+| 已交付版本沙盒 | `docs/archive/v<version>/` |
+| 任务正式档 | `docs/tasks/<version>-<type>-<short-desc>/task.md` |
+
+## 规则文件
+
+引用 `.claude/rules/` 的 4 个 mdc(用相对路径):
+
+- **三层决策 + 闭环复盘**: `decision-method.mdc`(必装,alwaysApply)
+- **commit message 写法**: `commit-style.mdc`(必装,alwaysApply)
+- **代码注释风格**: `comment-style.mdc`(必装,alwaysApply)
+- **任务正式档路径**: `task-directory.mdc`(必装,alwaysApply)
+
+## 工作流铁律(必走)
+
+### 改前:三层穷举
+
+任何改动前,先对照三层检查清单:
+
+| Layer | 内容 | 来源 |
+|---|---|---|
+| **L1 原始权威** | 库官方文档 / 既有规范 / WebFetch / context7 | 外部权威 |
+| **L2 统一设计** | 本项目已立 convention / `.claude/rules/` / `docs/design/` | 项目内部 |
+| **L3 具体问题** | 当前 issue / bug / 需求 + **所有 user-facing 副作用** | 用户描述 + **主动枚举** |
+
+任一层缺失 = 停下来补查再动手。
+
+### 改后:闭环复盘(走 `/retro` skill)
+
+交付完成后,跑 `/retro` 走 4 段模板(决策 / 未识别 / 暴露 / 沉淀),把可推广教训沉淀到 `~/.claude/projects/.../memory/`。
+
+### 完成内容 = 4 件事(用户明说)
+
+| # | 动作 | 必做项 |
+|---|---|---|
+| 1 | **Update** | 更新所有相关文件(不只是 primary deliverable) |
+| 2 | **Reorganize** | 重组归位(spec / plan / report / task-directory 正确路径) |
+| 3 | **Adjust plan** | 调整 plan(已完成 task 标 done,新增 task 加,作废 task 记原因) |
+| 4 | **Adjust memory** | 调整 memory(generic vs 项目专属分类,过期/过程性清理,新洞察沉淀) |
+
+### 安全操作(防止破坏性误操作)
+
+配置文件覆盖 / git 操作前,先**探测已有**:`ls -d .claude CLAUDE.md 2>/dev/null`。
+破坏性操作必 typed `proceed`(不是 y/n)才继续。
+覆盖前自动 `.bak.<timestamp>` 写到 `.claude/_backups/` + 写 MANIFEST。
+
+## 工作流铁律(约束)
+
+- **追求相对精简,不是绝对精简** — 重要内容不删,根据场景调整
+- **极简优先** — 满足诉求的最少 ≠ 绝对最少;不为"未来可能需要"加复杂度
+- **精准修改** — 只碰必须碰的,只清理自己造成的混乱
+- **思考在前** — 不要假设,不要隐藏困惑,呈现权衡
+- **目标驱动** — 定义成功标准,循环验证直到达成
+
+## 关联
+
+- `.claude/rules/decision-method.mdc` — 三层决策法(详细)
+- `.claude/rules/commit-style.mdc` — commit 写法(详细)
+- `.claude/rules/comment-style.mdc` — 注释风格(详细)
+- `.claude/rules/task-directory.mdc` — 任务正式档(详细)
+- `.claude/skills/retrospective/SKILL.md` — 闭环复盘 4 段模板
+- `~/.claude/projects/.../memory/root-goal-three-layer.md` — 根本目标视角(跨 session 召回)
+- `~/.claude/projects/.../memory/_meta/completion-protocol.md` — 完成内容 4 件事(跨 session 召回)
