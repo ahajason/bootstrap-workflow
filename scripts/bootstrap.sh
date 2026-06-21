@@ -9,7 +9,7 @@ set -e
 
 SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET="${1:?Usage: bootstrap.sh <target-project-path>}"
-BUSINESS_DOMAINS="${BUSINESS_DOMAINS:-meta}"
+BUSINESS_DOMAINS="${BUSINESS_DOMAINS:-}"
 
 if [ ! -d "$TARGET" ]; then
   echo "❌ 目标目录不存在: $TARGET"
@@ -19,7 +19,7 @@ fi
 echo "=== Bootstrap Workflow v8.1 ==="
 echo "Skill 源: $SKILL_DIR"
 echo "目标项目: $TARGET"
-echo "业务域: $BUSINESS_DOMAINS"
+echo "业务域: ${BUSINESS_DOMAINS:-(未填)}"
 echo ""
 
 # Step 1a: 业务文件探测(NEW — 防 F1/F2)
@@ -203,31 +203,50 @@ done
 # Copy files
 mkdir -p "$TARGET/.claude/rules" "$TARGET/.claude/memory" "$TARGET/.claude/skills/retrospective"
 
-# CLAUDE.md
-sed "s|{{BUSINESS_DOMAINS}}|$BUSINESS_DOMAINS|g" \
-  "$SKILL_DIR/assets/CLAUDE.md.template" > "$TARGET/CLAUDE.md"
-echo "  ✓ CLAUDE.md"
+# CLAUDE.md(关键:Add-only / Skip-existing+backup 不覆盖!)
+if [[ " ${CONFLICTS[*]} " =~ " CLAUDE.md " ]]; then
+  echo "  ⏭️  CLAUDE.md 在冲突列表中,跳过(用户已选 Add-only / Skip+backup / Per-file skip)"
+else
+  sed "s|{{BUSINESS_DOMAINS}}|$BUSINESS_DOMAINS|g" \
+    "$SKILL_DIR/assets/CLAUDE.md.template" > "$TARGET/CLAUDE.md"
+  echo "  ✓ CLAUDE.md"
+fi
 
 # Rules
 for rule in decision-method commit-style comment-style task-directory; do
+  rule_path=".claude/rules/$rule.mdc"
+  if [[ " ${CONFLICTS[*]} " =~ " $rule_path " ]]; then
+    echo "  ⏭️  $rule_path 在冲突列表中,跳过"
+    continue
+  fi
   if [ -f "$SKILL_DIR/assets/rules/$rule.mdc" ]; then
     sed "s|{{BUSINESS_DOMAINS}}|$BUSINESS_DOMAINS|g" \
-      "$SKILL_DIR/assets/rules/$rule.mdc" > "$TARGET/.claude/rules/$rule.mdc"
-    echo "  ✓ .claude/rules/$rule.mdc"
+      "$SKILL_DIR/assets/rules/$rule.mdc" > "$TARGET/$rule_path"
+    echo "  ✓ $rule_path"
   fi
 done
 
 # Memory
 for mem in mechanism-layering root-goal-three-layer parallel-subagent-research completion-protocol; do
+  mem_path=".claude/memory/$mem.md"
+  if [[ " ${CONFLICTS[*]} " =~ " $mem_path " ]]; then
+    echo "  ⏭️  $mem_path 在冲突列表中,跳过"
+    continue
+  fi
   if [ -f "$SKILL_DIR/assets/memory/$mem.md" ]; then
-    cp "$SKILL_DIR/assets/memory/$mem.md" "$TARGET/.claude/memory/$mem.md"
-    echo "  ✓ .claude/memory/$mem.md"
+    cp "$SKILL_DIR/assets/memory/$mem.md" "$TARGET/$mem_path"
+    echo "  ✓ $mem_path"
   fi
 done
 
 # Retrospective skill
-cp "$SKILL_DIR/assets/skills/retrospective/SKILL.md" "$TARGET/.claude/skills/retrospective/SKILL.md"
-echo "  ✓ .claude/skills/retrospective/SKILL.md"
+skill_path=".claude/skills/retrospective/SKILL.md"
+if [[ " ${CONFLICTS[*]} " =~ " $skill_path " ]]; then
+  echo "  ⏭️  $skill_path 在冲突列表中,跳过"
+else
+  cp "$SKILL_DIR/assets/skills/retrospective/SKILL.md" "$TARGET/$skill_path"
+  echo "  ✓ $skill_path"
+fi
 
 # Step 4: Verify
 echo ""
@@ -265,7 +284,7 @@ fi
 echo ""
 echo "✅ Bootstrap 完成!"
 echo "  备份位置: $BACKUP_DIR"
-echo "  业务域: $BUSINESS_DOMAINS"
+echo "  业务域: ${BUSINESS_DOMAINS:-(未填,可手动编辑 CLAUDE.md)}"
 echo "  下一步: 编辑 CLAUDE.md 填入项目名 / 技术栈 / Quick Start"
 echo "  ⚠️  提醒: 本 skill 不装 package.json / ESLint / 业务代码,用 vite/next 自带脚手架"
 

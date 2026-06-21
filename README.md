@@ -1,19 +1,14 @@
 # Bootstrap Workflow
 
-> 把 jason 的工作流方法论(三层决策 + 闭环复盘 + 4 件事协议)封装为可复用的 project bootstrap skill。
+> 把通用工作流方法论(三层决策 / 闭环复盘 / 4 件事协议)封装为可复用的 project bootstrap skill。
 
 ## 这是什么
 
-一个 `disable-model-invocation: true` 的 user-invocable skill,目标:
-
-- 启动新项目时,一键复制 jason 的完整工作流骨架
-- 不复制 mindtap 业务域(玻璃 / Tauri / macOS 等)
-- 检测已有配置,不静默覆盖(superskills 缺口的兜底)
-- 完成内容走 4 件事协议
+`disable-model-invocation: true` 的 user-invocable skill:启动新项目时,一键复制通用工作流骨架(CLAUDE.md + 4 rules + 4 memory + 1 skill)。检测已有配置,不静默覆盖(superskills 缺口的兜底)。
 
 ## 怎么用
 
-### 方式 A:作为 Claude Code skill 安装
+作为 Claude Code skill 安装(本 skill 必搭配 AI Agent,占位块由 Agent 询问后填入,不由用户手动输入):
 
 ```bash
 # 克隆仓库
@@ -22,18 +17,6 @@ git clone https://github.com/ahajason/bootstrap-workflow.git \
 
 # 在 Claude Code 中
 /bootstrap-workflow
-```
-
-### 方式 B:直接运行 bootstrap 脚本
-
-```bash
-git clone https://github.com/ahajason/bootstrap-workflow.git
-cd bootstrap-workflow
-chmod +x scripts/bootstrap.sh
-
-# 在新项目中跑
-BUSINESS_DOMAINS="floating settings db" \
-  /path/to/bootstrap-workflow/scripts/bootstrap.sh /path/to/new-project
 ```
 
 ## 安装到目标项目后会得到

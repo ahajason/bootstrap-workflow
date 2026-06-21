@@ -57,7 +57,7 @@ allowed-tools: Read, Write, Bash
 ## What Stays Out
 
 - **5 项 L3 高频红线** + 完整 41 项清单放仓库 `docs/contributing/L3-specific.md`
-- **业务域**(玻璃 / Tauri / macOS / etc)— 项目专属,本 skill 不假设
+- **业务域**(scope)— 项目专属,本 skill 不假设;commit-style.mdc 仅以 `<scope-name>` 提示,不举例
 - **完整可选 memory/rules**(14 个)— 放仓库 `docs/contributing/optional-*.md`,用户按需手动复制
 
 ## Common Mistakes(8 项 RED + 5 项 REFACTOR 反模式)

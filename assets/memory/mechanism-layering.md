@@ -17,7 +17,7 @@ metadata:
 |---|---|---|---|
 | **Rule** (.mdc) | 行为纪律 / 必走流程 | alwaysApply / paths 匹配 | `decision-method.mdc`(三层决策) / `comment-style.mdc`(注释规则) |
 | **Skill** (SKILL.md) | 流程调用 / 工具(可手动 `/xxx` 触发) | 触发式 / 描述匹配 | `retrospective`(闭环复盘 4 段模板) / `bootstrap-workflow`(项目启动) |
-| **Doc** (docs/) | 项目实例 / 业务 spec / plan / report | on-demand Read / 路径自解释 | `docs/specs/2026-06-19-floating-design.md` |
+| **Doc** (docs/) | 项目实例 / 业务 spec / plan / report | on-demand Read / 路径自解释 | `docs/specs/YYYY-MM-DD-<topic>-design.md` |
 | **Memory** (~/.claude/projects/.../memory/) | recall 事实 / 跨 session 经验 | 全量装载(200 行上限) / topic on-demand Read | `three-layer-decision-method.md` / `parallel-subagent-research.md` |
 
 ## 判定规则

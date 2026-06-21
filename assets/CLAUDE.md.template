@@ -38,14 +38,14 @@
 
 (留空待用户填 — generic skill 不假设视觉语言)
 
-## 业务域(本项目专属)
+## 业务域(scope)
 
 ```
 {{BUSINESS_DOMAINS}}
 ```
 
-> bootstrap 时由用户填入。例:`floating / settings / timeline / db / tray`。
-> commit message scope 用此清单(参考 `.claude/rules/commit-style.mdc`)。
+> bootstrap 时由用户填入。generic skill 不举具体例子 — 各项目维护自己的业务域清单。
+> commit message `<scope>` 用此清单(参考 `.claude/rules/commit-style.mdc`)。
 
 ## 文件归位
 

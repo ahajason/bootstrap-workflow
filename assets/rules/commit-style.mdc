@@ -41,11 +41,10 @@ alwaysApply: true
 | build    | 构建 / CI             |
 | revert   | 撤销                  |
 
-## 业务域
+## 业务域(scope)
 
-`{{BUSINESS_DOMAINS}}`
+`<scope-name>`(项目 CLAUDE.md 自己定义,generic skill 不假设)
 
-> bootstrap 时由用户填入。例:`floating / settings / timeline / db / tray`。
 > scope 选择规则: commit 改的代码 80% 以上在哪个业务域, 就用哪个 scope; 跨多个用最核心的那个。
 
 ## 粒度

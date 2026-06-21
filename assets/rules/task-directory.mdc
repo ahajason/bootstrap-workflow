@@ -28,7 +28,7 @@ alwaysApply: true
 | type      | `feat` / `fix` / `chore` / `docs` / `refactor`      |
 | short-desc| kebab-case, 2-4 词                                  |
 
-**注意**: slug 里的 version 是**项目阶段标签**(哪个版本), 不绑业务域. 业务语义(floating / settings / db 等)由 task.md 内部和 commit message 自己写.
+**注意**: slug 里的 version 是**项目阶段标签**(哪个版本), 不绑业务域. 业务语义由 task.md 内部和 commit message 自己写.
 
 ## task.md 极简模板(~10 行)
 
